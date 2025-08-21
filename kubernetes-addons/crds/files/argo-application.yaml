@@ -1,0 +1,19 @@
+# ArgoCD application configuration
+# https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ${application_name}
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: ${application_repo_url}
+    targetRevision: ${application_branch}
+    path: ${application_path}
+  destination:
+    server: ${kubernetes_api_server}
+    namespace: ${namespace}
+  syncPolicy:
+    automated:
+     prune: true

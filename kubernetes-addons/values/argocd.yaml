@@ -1,0 +1,28 @@
+---
+nameOverride: argocd
+server:
+  env:
+    - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
+      value: "0"
+  service:
+    type: LoadBalancer
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: ${argocd_domain}
+      metallb.universe.tf/ip-allocated-from-pool: first-pool
+
+  certificate:
+    enabled: true
+    secretName: argocd-server-tls
+    domain: "${argocd_domain}"
+    issuer:
+      group:  "cert-manager.io"
+      kind:   "ClusterIssuer"
+      name:   "${argocd_certificate_issuer_name}"
+
+  serviceAccount:
+    name: argocd-server
+    create: true
+configs:
+  rbac:
+    policy.default: "role:readonly"
+
