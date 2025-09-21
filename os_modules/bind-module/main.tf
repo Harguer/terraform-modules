@@ -253,7 +253,7 @@ resource "null_resource" "reload_bind" {
       "sudo chmod -R 640 /etc/bind/*",
       "sudo named-checkconf /etc/bind/named.conf",
       "sudo systemctl daemon-reload",
-      "sudo systemctl reload named || sudo systemctl restart named",
+      "sudo systemctl restart named",
     ]
   }
 }
